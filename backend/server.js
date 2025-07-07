@@ -26,23 +26,28 @@
 //   console.log(`Server running on http://localhost:${process.env.PORT}`)
 // );
 require("dotenv").config();
+require("./cron");
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session"); 
 const passport = require("passport");
-const cors = require("cors");
+require("./cron");
+
 
 require("./config/passport");
 
 const app = express();
 app.use(express.json());
 
+const cors = require("cors");
+
 app.use(
   cors({
     origin: "http://localhost:3000",
-    credentials: true,
+    credentials: true,               // allow cookies
   })
 );
+
 
 
 app.use(
@@ -68,6 +73,7 @@ mongoose
 app.use("/auth", require("./routes/auth"));
 app.use("/email", require("./routes/email"));
 app.set("trust proxy", 1);
+app.use("/track", require("./routes/track"));
 
 
 const PORT = process.env.PORT || 5000;

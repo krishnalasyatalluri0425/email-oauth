@@ -9,4 +9,5 @@ const eventSchema = new mongoose.Schema({
   userAgent: String,
 });
 
+
 module.exports = mongoose.model("EmailEvent", eventSchema);

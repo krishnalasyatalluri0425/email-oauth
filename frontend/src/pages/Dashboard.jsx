@@ -14,7 +14,11 @@ function Dashboard() {
   useEffect(() => {
     axios
       .get("http://localhost:5000/auth/me", { withCredentials: true })
-      .then((res) => setUser(res.data))
+      .then((res) => {
+        setUser(res.data);
+        // 👇 redirect into sidebar layout (compose page)
+        navigate("/compose");
+      })
       .catch(() => setUser(null));
   }, []);
 

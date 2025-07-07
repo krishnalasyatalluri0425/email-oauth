@@ -36,13 +36,13 @@ function EmailComposer() {
         cc: cc ? cc.split(",").map((email) => email.trim()) : [],
         subject,
         message,
+        trackLinks: true,
       };
 
       await axios.post("http://localhost:5000/email/send", payload, {
         withCredentials: true,
       });
 
-      // Reset form
       setForm({ to: "", cc: "", subject: "", message: "" });
       setShowCC(false);
       setResponseMsg({ text: "✅ Email sent successfully!", isError: false });
@@ -61,18 +61,18 @@ function EmailComposer() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 md:p-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+    <div className="min-h-screen bg-gray-100 p-6 text-lg">
+      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-4 md:p-6">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl md:text-2xl font-bold text-white">Compose Email</h2>
-            <div className="flex items-center space-x-2">
-              <span className="text-white text-sm">Provider:</span>
+            <h2 className="text-3xl font-bold text-white">Compose Email</h2>
+            <div className="flex items-center space-x-3">
+              <span className="text-white text-lg">Provider:</span>
               <select
                 value={emailProvider}
                 onChange={(e) => setEmailProvider(e.target.value)}
-                className="bg-white/20 border border-white/30 rounded-md px-2 py-1 text-white text-sm focus:outline-none"
+                className="bg-white/20 border border-white/30 rounded-md px-3 py-1.5 text-white text-lg focus:outline-none"
               >
                 <option value="Gmail">Gmail</option>
                 <option value="Outlook">Outlook</option>
@@ -82,15 +82,15 @@ function EmailComposer() {
         </div>
 
         {/* Email Form */}
-        <div className="p-4 md:p-6 space-y-4">
+        <div className="p-6 space-y-6">
           {/* To Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">To*</label>
+            <label className="block text-xl font-semibold text-gray-800 mb-2">To*</label>
             <input
               type="text"
               name="to"
               placeholder="e.g. john@example.com, jane@abc.com"
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2.5 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={form.to}
               onChange={handleChange}
             />
@@ -99,7 +99,7 @@ function EmailComposer() {
           {/* CC Field */}
           <div>
             <button
-              className="text-sm text-blue-600 hover:text-blue-800 flex items-center"
+              className="text-lg text-blue-600 hover:text-blue-800 flex items-center mb-2"
               onClick={() => setShowCC(!showCC)}
               type="button"
             >
@@ -110,7 +110,7 @@ function EmailComposer() {
                 type="text"
                 name="cc"
                 placeholder="cc@example.com"
-                className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2.5 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 value={form.cc}
                 onChange={handleChange}
               />
@@ -119,12 +119,12 @@ function EmailComposer() {
 
           {/* Subject */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Subject*</label>
+            <label className="block text-xl font-semibold text-gray-800 mb-2">Subject*</label>
             <input
               type="text"
               name="subject"
               placeholder="Email subject"
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2.5 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={form.subject}
               onChange={handleChange}
             />
@@ -132,8 +132,8 @@ function EmailComposer() {
 
           {/* Rich Text Editor */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Message*</label>
-            <div className="border border-gray-300 rounded-md overflow-hidden">
+            <label className="block text-xl font-semibold text-gray-800 mb-2">Message*</label>
+            <div className="border border-gray-300 rounded-lg overflow-hidden">
               <ReactQuill
                 theme="snow"
                 value={form.message}
@@ -149,34 +149,35 @@ function EmailComposer() {
                     ["clean"],
                   ],
                 }}
+                className="text-lg"
               />
             </div>
           </div>
 
           {/* Status & Buttons */}
-          <div className="flex justify-between items-center pt-4">
+          <div className="flex justify-between items-center pt-6">
             {responseMsg.text && (
-              <p className={`text-sm ${responseMsg.isError ? "text-red-600" : "text-green-600"}`}>
+              <p className={`text-lg ${responseMsg.isError ? "text-red-600" : "text-green-600"}`}>
                 {responseMsg.text}
               </p>
             )}
-            <div className="flex space-x-2">
+            <div className="flex space-x-4">
+              <button
+                type="button"
+                onClick={clearAllFields}
+                className="px-5 py-2.5 text-lg text-gray-600 hover:text-black rounded-lg"
+              >
+                Clear All
+              </button>
               <button
                 type="button"
                 onClick={handleSend}
                 disabled={loading}
-                className={`px-6 py-2 rounded-md text-white font-medium flex items-center space-x-2 ${
+                className={`px-8 py-2.5 text-lg rounded-lg text-white font-medium ${
                   loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
                 }`}
               >
-                {loading ? "Sending..." : "Send"}
-              </button>
-              <button
-                type="button"
-                onClick={clearAllFields}
-                className="text-sm text-gray-600 hover:text-black"
-              >
-                Clear All
+                {loading ? "Sending..." : "Send Email"}
               </button>
             </div>
           </div>

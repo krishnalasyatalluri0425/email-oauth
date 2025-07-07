@@ -40,6 +40,7 @@ router.get(
 );
 
 
+// In routes/auth.js
 router.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -47,7 +48,7 @@ router.get(
     session: true,
   }),
   (req, res) => {
-    res.redirect("http://localhost:3000/dashboard");
+    res.redirect("http://localhost:3000/tracking"); // Changed from /dashboard to /tracking
   }
 );
 
