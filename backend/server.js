@@ -28,7 +28,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const session = require("express-session"); // ✅ Fixed: use express-session
+const session = require("express-session"); 
 const passport = require("passport");
 const cors = require("cors");
 
@@ -44,14 +44,14 @@ app.use(
   })
 );
 
-// ✅ Setup session middleware
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      maxAge: 24 * 60 * 60 * 1000, 
     },
   })
 );
@@ -59,15 +59,15 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ✅ Connect to MongoDB
+
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// ✅ Routes
 app.use("/auth", require("./routes/auth"));
 app.use("/email", require("./routes/email"));
+app.set("trust proxy", 1);
 
 
 const PORT = process.env.PORT || 5000;
